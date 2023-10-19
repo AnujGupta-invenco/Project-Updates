@@ -1,1 +1,103 @@
-<p>stepper works!</p>
+<!-- <mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'1000'">
+  <mat-step [stepControl]="requestNameGroup" class="request-name-class">
+    <form [formGroup]="requestNameGroup">
+      <ng-template matStepLabel>RKI Request Name</ng-template>
+      <mat-form-field *ngIf="!isRequestName">
+        <input
+          matInput
+          placeholder=""
+          formControlName="requestNameCtrl"
+          required
+        />
+      </mat-form-field>
+      <p *ngIf="showErrorMessageRequestName()" class="error">Input must be non-empty</p>
+      <div *ngIf="!isRequestName">
+        <button matStepperNext [disabled]="!isRequestNameValid()" class="custom-btn" (click)="onCreateRequestName()" [style.marginTop]="showErrorMessageRequestName() ? '' : '20px'">
+          Continue
+        </button>
+      </div>
+      <p class="text" *ngIf="isRequestName">{{requestedName}}</p>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="keyGroup">
+    <form [formGroup]="keyGroup">
+      <ng-template matStepLabel>RKI Key Group</ng-template>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder=""
+          formControlName="keyGroupCtrl"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button mat-raised-button matStepperNext color="primary">
+          Continue
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="devicesGroup">
+    <form [formGroup]="devicesGroup">
+      <ng-template matStepLabel>Devices</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="" formControlName="devicesCtrl" required />
+      </mat-form-field>
+      <div>
+        <button mat-raised-button matStepperNext color="primary">
+          Continue
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="approversGroup">
+    <form [formGroup]="approversGroup">
+      <ng-template matStepLabel>Approvers</ng-template>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder=""
+          formControlName="approversCtrl"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button mat-raised-button color="primary" (click)="onDone()">
+          Done
+        </button>
+      </div>
+    </form>
+  </mat-step>
+</mat-vertical-stepper>
+<div class="m-4 d-flex justify-content-between">
+  <button [disabled]="!isCreateRequest" class="custom-btn">
+    Create Request
+  </button>
+  <button
+    mat-raised-button
+    color="basic"
+    style="background-color: rgb(192, 192, 192)"
+  >
+    Back
+  </button>
+</div> -->
+
+<mat-vertical-stepper>
+  <mat-step label="RKI Request Name">Step 1 Content</mat-step>
+  <mat-step label="RKI Key Group">
+    <ng-template matStepLabel>
+      <ng-container *ngIf="currentStep >= 1">
+        <mat-icon>check</mat-icon>
+      </ng-container>
+      <ng-container *ngIf="currentStep < 1">
+        {{currentStep + 2}}
+      </ng-container>
+    </ng-template>
+  </mat-step>
+  <mat-step label="Devices">Step 3 Content</mat-step>
+  <mat-step label="Approvers">Step 3 Content</mat-step>
+</mat-vertical-stepper>
+<div class="end-button">
+  <button>Create Request</button>
+  <button>Back</button>
+</div>
