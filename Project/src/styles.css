@@ -2,3 +2,15 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+:root{
+    --mat-stepper-header-height: 60px;
+}
+
+:root .mat-vertical-stepper-header {
+    display: flex;
+    align-items: center;
+    height: 20px;
+    padding: 20px;
+    margin: 5px;
+}

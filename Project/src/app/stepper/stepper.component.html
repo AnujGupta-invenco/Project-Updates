@@ -1,6 +1,6 @@
 <!-- <mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'1000'">
-  <mat-step [stepControl]="requestNameGroup" class="request-name-class">
-    <form [formGroup]="requestNameGroup">
+  <mat-step [stepControl]="RKIRequestNameGroup" class="request-name-class">
+    <form [formGroup]="RKIRequestNameGroup">
       <ng-template matStepLabel>RKI Request Name</ng-template>
       <mat-form-field *ngIf="!isRequestName">
         <input
@@ -12,7 +12,7 @@
       </mat-form-field>
       <p *ngIf="showErrorMessageRequestName()" class="error">Input must be non-empty</p>
       <div *ngIf="!isRequestName">
-        <button matStepperNext [disabled]="!isRequestNameValid()" class="custom-btn" (click)="onCreateRequestName()" [style.marginTop]="showErrorMessageRequestName() ? '' : '20px'">
+        <button matStepperNext class="custom-btn" [disabled]="!isRequestNameValid()" class="custom-btn" (click)="onCreateRequestName()" [style.marginTop]="showErrorMessageRequestName() ? '' : '20px'">
           Continue
         </button>
       </div>
@@ -31,7 +31,7 @@
         />
       </mat-form-field>
       <div>
-        <button mat-raised-button matStepperNext color="primary">
+        <button mat-raised-button matStepperNext class="custom-btn" color="primary">
           Continue
         </button>
       </div>
@@ -44,7 +44,7 @@
         <input matInput placeholder="" formControlName="devicesCtrl" required />
       </mat-form-field>
       <div>
-        <button mat-raised-button matStepperNext color="primary">
+        <button mat-raised-button matStepperNext class="custom-btn" color="primary">
           Continue
         </button>
       </div>
@@ -82,22 +82,136 @@
   </button>
 </div> -->
 
-<mat-vertical-stepper>
-  <mat-step label="RKI Request Name">Step 1 Content</mat-step>
-  <mat-step label="RKI Key Group">
-    <ng-template matStepLabel>
-      <ng-container *ngIf="currentStep >= 1">
-        <mat-icon>check</mat-icon>
-      </ng-container>
-      <ng-container *ngIf="currentStep < 1">
-        {{currentStep + 2}}
-      </ng-container>
-    </ng-template>
+<!-- <mat-icon style="color: rgb(0, 172, 0);">check_circle</mat-icon> -->
+
+<!-- <mat-vertical-stepper>
+  <ng-template matStepperIcon="edit">
+    <mat-icon class="check-circle" style="font-size: 25px; height: 25px; width: 25px;">check_circle</mat-icon>
+  </ng-template>
+  <mat-step label="RKI Request Name">
+    <p>
+      <mat-form-field appearance="outline">
+        <input matInput>
+      </mat-form-field>
+    </p>
+    <div>
+      <button matStepperNext class="custom-btn" (click)="onRequestName()">Continue</button>
+    </div>
+    <mat-divider style="margin-top: 40px;"></mat-divider>
   </mat-step>
-  <mat-step label="Devices">Step 3 Content</mat-step>
-  <mat-step label="Approvers">Step 3 Content</mat-step>
+  <mat-step label="RKI Key Group" class="disabled-label" style="pointer-events: none;">
+    <p>
+      <mat-form-field>
+        <mat-label>Select the key</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let team of teams" [value]="team.name">
+            {{team.name}}
+          </mat-option>
+          <mat-option>key 1</mat-option>
+          <mat-option>key 2</mat-option>
+          <mat-option>key 3</mat-option>
+          <mat-option>key 4</mat-option>
+          <mat-option>key 5</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+    <div>
+      <button matStepperNext class="custom-btn">Continue</button>
+    </div>
+  </mat-step>
+  <mat-step label="Devices">
+    <div>
+      <mat-form-field appearance="outline" style=" width: 60%; height: 40px; margin-bottom: 40px;">
+        <input matInput placeholder="Enter the serial number">
+      </mat-form-field>
+      <div>
+        <button>Add</button>
+      </div>
+    </div>
+    <div>
+      <button matStepperNext class="custom-btn">Continue</button>
+    </div>
+  </mat-step>
+  <mat-step label="Approvers">
+    <div>
+      <mat-form-field appearance="outline" style=" width: 60%;">
+        <input matInput placeholder="Add a person">
+      </mat-form-field>
+    </div>
+  </mat-step>
 </mat-vertical-stepper>
-<div class="end-button">
-  <button>Create Request</button>
-  <button>Back</button>
+<div class="end-buttons">
+  <button class="create-request-btn">Create Request</button>
+  <button class="back-btn">Back</button>
+</div> -->
+
+
+<div class="main-container">
+  <mat-vertical-stepper>
+    <ng-template matStepperIcon="edit">
+      <mat-icon class="check-circle" style="font-size: 25px; height: 25px; width: 25px;">check_circle</mat-icon>
+    </ng-template>
+    <mat-step [stepControl]="RKIRequestNameGroup">
+      <ng-template matStepLabel class="mat-step-text-label">
+        RKI Request Name
+        <div class="overlay" (click)="onStepHeaderClick()"></div>
+      </ng-template>
+      <div class="RKI-request-name-content" *ngIf="!isRKIRequestNameDone">
+        <form [formGroup]="RKIRequestNameGroup">
+          <div class="request-name-input">
+            <input type="text" placeholder="Enter the name" formControlName="RKIRequestNameCtrl" [style.outlineColor]="!errorRKIRequestName() ? 'rgb(64, 161, 251)' : 'rgb(245, 116, 116)'" #requestNameInput>
+          </div>
+        </form>
+        <div class="request-name-btn">
+          <button class="custom-btn" matStepperNext [disabled]="!isRKIRequestNameIsValid()" (click)="onClickOfRKIRequestName()">Continue</button>
+        </div>
+      </div>
+      <div class="RKI-request-name" *ngIf="isRKIRequestNameDone" style="z-index: 5;">
+        {{RKIRequestName}}
+      </div>
+    </mat-step>
+    <mat-step label="RKI Key Group">
+      <div class="key-group-content">
+        <mat-form-field>
+          <input type="text" placeholder="Select a key group">
+          <mat-select>
+            <mat-option *ngFor="let key of keyGroup" [value]="key.name">
+              {{key.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="key-group-btn">
+        <button class="custom-btn" matStepperNext>Continue</button>
+      </div>
+    </mat-step>
+    <mat-step label="Devices">
+      <div class="devices-content">
+        <input type="text" placeholder="Enter serial number">
+        <div class="add-device">
+          <button>Add</button>
+        </div>
+      </div>
+      <div class="devices-btn">
+        <button class="custom-btn" matStepperNext>Continue</button>
+      </div>
+    </mat-step>
+    <mat-step label="Approvers">
+      <div class="approvers-content">
+        <mat-form-field>
+          <input type="text" placeholder="Add a person" matInput [formControl]="searchControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+  <div class="end-buttons">
+    <button class="create-request-btn">Create Request</button>
+    <button class="back-btn">Back</button>
+  </div>
 </div>
+
