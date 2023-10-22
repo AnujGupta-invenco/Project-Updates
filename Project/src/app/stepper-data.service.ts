@@ -11,7 +11,11 @@ export class StepperDataService {
   constructor(private http : HttpClient) { }
 
 
-  getData(): Observable<any>{
+  geRKIKeyGrouptData(): Observable<any>{
     return this.http.get('/assets/keyGroup.json');
+  }
+
+  getApproversData(): Observable<any>{
+    return this.http.get('/assets/approvers.json')
   }
 }

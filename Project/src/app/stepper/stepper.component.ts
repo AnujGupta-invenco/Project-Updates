@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
@@ -37,16 +37,44 @@ import { Observable, map, startWith } from 'rxjs';
 
 export class StepperComponent implements OnInit {
   searchControl = new FormControl();
-  options: string[] = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'Fig', 'Grape'];
-  filteredOptions: Observable<string[]>;
   keyGroup: any[] = [];
   
   constructor(private formBuilder: FormBuilder, private stepperDataService : StepperDataService, private renderer : Renderer2) {
-    this.filteredOptions = this.searchControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value))
-    );
+    this.searchControl.valueChanges
+      .pipe(
+        startWith(''),
+        map((value) => this._filter(value))
+      )
+      .subscribe((filteredOptions) => {
+        this.filteredOptions = filteredOptions;
+      });
   }
+
+  ngOnInit(): void {
+    // fetching keyGroup data 
+    this.stepperDataService.geRKIKeyGrouptData().subscribe(
+      (result : any) => {
+        this.keyGroup = result;
+        // console.log(result);
+      },
+      (error : any) => {
+        console.error("Error: ", error);
+      }
+    );
+
+    // fetching aprovers date 
+    this.stepperDataService.getApproversData().subscribe(
+      (approvers : any) => {
+        this.Approvers = approvers;
+        console.log(this.Approvers);
+      },
+      (error : any) => {
+        console.error("Error", error);
+      }
+    );
+
+  }
+
 
   // RKI Request Name Step 
   isRKIRequestNameDone: boolean = false;
@@ -87,83 +115,40 @@ export class StepperComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    this.stepperDataService.getData().subscribe(
-      (result : any) => {
-        this.keyGroup = result;
-        // console.log(result);
-      },
-      (error : any) => {
-        console.error("Error: ", error);
-      }
-    )
+
+
+  // Approver Step
+  @Input() option: any;
+  @Output() remove = new EventEmitter();
+  filteredOptions: any[] = [];
+  isAutocompleteVisible: boolean = false;
+  Approvers: any[] = [];
+  selectedPerson: any[] = [];
+
+  onInputChange(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value;
+    this.filteredOptions = this._filter(inputValue);
+    this.isAutocompleteVisible = this.filteredOptions.length > 0 && inputValue.length>0;
+    console.log(this.selectedPerson);
   }
 
-  private _filter(value: string): string[] {
+  _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    return this.options.filter((option) => option.toLowerCase().includes(filterValue));
+    return this.Approvers.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
 
-  // private _filter(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.options.filter((option) => option.toLowerCase().includes(filterValue));
-  // }
+  selectOption(option: string) {
+    this.searchControl.setValue('');
+    this.selectedPerson.push(option);
+    this.isAutocompleteVisible = false;
+  }
 
+  removePerson(){
+    this.remove.emit();
+  }
+
+  removeSelectedPerson(option: any){
+    console.log(option);
+    this.selectedPerson = this.selectedPerson.filter((person)=> person !== option);
+  }
 }
-
-
-// isCreateRequest: boolean = false;
-  // isRequestName: boolean = false;
-  // isRequestKey: boolean = false;
-  // isDevices: boolean = false;
-  // isApproachers: boolean = false;
-  // requestedName: string = '';
-
-  // constructor(private _formBuilder: FormBuilder) {}
-
-  // requestNameGroup: FormGroup = this._formBuilder.group({requestNameCtrl: ['']});
-  // keyGroup: FormGroup = this._formBuilder.group({keyGroupCtrl: ['']});
-  // devicesGroup: FormGroup = this._formBuilder.group({devicesCtrl: ['']});
-  // approversGroup: FormGroup = this._formBuilder.group({approversCtrl: ['']});
-
-  // onDone(){
-  //   this.isCreateRequest = true;
-  // }
-
-  // isRequestNameValid(){
-  //   return this.requestNameGroup.valid;
-  // }
-  
-  // onCreateRequestName(){
-  //   this.isRequestName = true;
-  //   this.requestedName = this.requestNameGroup.get('requestNameCtrl')?.value;
-  // }
-
-  // showErrorMessageRequestName(){
-  //   return this.requestNameGroup.invalid && (this.requestNameGroup.touched || this.requestNameGroup.dirty);
-  // }
-
-  // isKeyValid(){
-  //   return this.keyGroup.valid && this.keyGroup.touched;
-  // }
-
-  // isDeviceValid(){
-  //   return this.devicesGroup.valid && this.devicesGroup.touched;
-  // }
-
-  // isApproverValid(){
-  //   return this.approversGroup.valid && this.approversGroup.touched;
-  // }
-
-
-  // onCreateRequestKey(){
-
-  // }
-
-  // onCreateDevice(){
-
-  // }
-
-  // onCreateApproverh(){
-
-  // }

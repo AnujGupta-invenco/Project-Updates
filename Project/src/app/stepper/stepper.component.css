@@ -1,93 +1,6 @@
-/* .check-circle{
-    top: 0; 
-    left: 0;
-    color: rgb(0, 185, 0);
-    background-color: #fff;
-    border-radius: 50%;
-}
-
-
-.custom-btn{
-    margin-top: 20px;
-    background-color: #3F51B5;
-    box-shadow: 0 2px 4px rgba(25, 118, 210, 0.2);
-    border-radius: 5px;
-    color: white;
-    border: none;
-    padding: 10px;
-}
-
-.custom-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-.custom-btn:hover{
-    background-color: #475bcd;
-}
-
-::ng-deep mat-icon {
-    font-size: 25px;
-    height: 25px;
-    width: 25px;
-}
-
-
-<<<< ========== End Button CSS ========== >>>> 
-.end-buttons{
-    margin: 25px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.end-buttons button{
-    border-radius: 5px;
-    border: none;
-    padding: 10px 15px;
-}
-
-.create-request-btn {
-    background-color: #3F51B5;
-    color: #fff;
-}
-
-.back-btn {
-    background-color: #d6d6d6;
-}
-
-
-::ng-deep .mat-step-header{
-    border: 1px solid black;
-    cursor: not-allowed;
-}
-
-
-
-::ng-deep .mat-vertical-stepper-header {
-    pointer-events: none;
-    cursor: not-allowed;
-    display: flex;
-    align-items: center;
-    height: 12px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    padding: calc((var(--mat-stepper-header-height) - 24px) / 2) 24px;
-}
-
-::ng-deep .mat-step-header .mat-step-text-label{
-    font-size: 20px;
-    border: 1px solid red;
-    font-weight: 400;
-    padding: none;
-}
-
-input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077789-1 mdc-text-field--outlined mdc-text-field--no-label" */
-
-
-
 /* <<===== Label Icon CSS ====>>  */
-.check-circle{
-    top: 0; 
+.check-circle {
+    top: 0;
     left: 0;
     color: rgb(0, 185, 0);
     background-color: #fff;
@@ -96,7 +9,7 @@ input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077
 
 
 /* <<==== Continue Button CSS =====>  */
-.custom-btn{
+.custom-btn {
     margin-top: 20px;
     background-color: #3F51B5;
     box-shadow: 0 2px 4px rgba(25, 118, 210, 0.2);
@@ -111,18 +24,18 @@ input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077
     cursor: not-allowed;
 }
 
-.custom-btn:hover{
+.custom-btn:hover {
     background-color: #475bcd;
 }
 
 /* <<<< ========== End Button CSS ========== >>>>  */
-.end-buttons{
+.end-buttons {
     margin: 25px;
     display: flex;
     justify-content: space-between;
 }
 
-.end-buttons button{
+.end-buttons button {
     border-radius: 5px;
     border: none;
     padding: 10px 15px;
@@ -143,7 +56,7 @@ input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077
     height: 40px;
 }
 
-.request-name-input input{
+.request-name-input input {
     padding: 20px;
     width: 100%;
     height: 100%;
@@ -151,7 +64,7 @@ input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077
     border: 2px solid #c4c4c4;
 }
 
-.request-name-input input::placeholder{
+.request-name-input input::placeholder {
     font-size: 15px;
     color: #979797;
 }
@@ -165,7 +78,7 @@ input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077
     background: transparent;
     z-index: 1;
 }
- 
+
 ::ng-deep .mat-step-text-label {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -182,26 +95,62 @@ input box field class="mat-mdc-text-field-wrapper mdc-text-field ng-tns-c1205077
     -webkit-tap-highlight-color: rgb(254, 254, 254);
 }
 
-
-
-/* <<=== Other CSS ===> */
-
-::ng-deep .matInput{
-    border: 2px solid red;
-}
-
+/* <<=== Approvers CSS ===> */
 .approvers-content {
-    width: 70%;
-    border: 1px solid;
-    height: 45px;
-    border-radius: 5px;
+    position: relative;
 }
 
-.mat-mdc-form-field{
-    /* border: 2px solid red; */
-    /* background-color: #fff; */
+.approvers-content input {
     width: 100%;
-    height: 65px;
+    padding: 10px;
+    border: 2px solid #c4c4c4;
+    border-radius: 5px;
+    outline-color: transparent;
+    /* Initially transparent */
 }
 
-/* class="approvers-content ng-star-inserted" */
+.autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    position: relative;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #c4c4c4;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.autocomplete div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.autocomplete div:hover {
+    background-color: #f0f0f0;
+}
+
+/* <<<=== Option CSS of Aprrovers ===>>  */
+.option {
+    display: flex;
+    align-items: center;
+}
+
+.name-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.name-icon img {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.email {
+    margin-top: 5px;
+}
