@@ -69,20 +69,20 @@
               </div>
             </div>
           </div>
-          <div class="selected-options"  *ngFor="let person of selectedPerson"   (remove)="removeSelectedPerson(person)">
+          <div class="selected-options"  *ngFor="let person of selectedPerson">
             <div class="selected-option">
               <div class="name-icon">
                 <img src={{person.icon}} alt="error">
                 <h4>{{ person.name }}</h4>
               </div>
-              <div class="remove" (click)="removePerson()" style="cursor: pointer;">✖</div>
+              <div class="remove" (click)="removePerson(person)" style="cursor: pointer;">✖</div>
             </div>
           </div>
       </div>
     </mat-step>
   </mat-vertical-stepper>
   <div class="end-buttons">
-    <button class="create-request-btn">Create Request</button>
+    <button class="create-request-btn" [disabled]="selectedPerson.length === 0" (click)="openConfirmationDialog()">Create Request</button>
     <button class="back-btn">Back</button>
   </div>
 </div>

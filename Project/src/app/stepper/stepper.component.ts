@@ -12,6 +12,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { StepperDataService } from '../stepper-data.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable, map, startWith } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { VerificationCodeDialogComponent } from '../verification-code-dialog/verification-code-dialog.component';
 
 @Component({
   selector: 'app-stepper',
@@ -29,7 +33,8 @@ import { Observable, map, startWith } from 'rxjs';
     MatIconModule,
     MatSelectModule,
     MatDividerModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDialogModule
   ]
 })
 
@@ -39,7 +44,7 @@ export class StepperComponent implements OnInit {
   searchControl = new FormControl();
   keyGroup: any[] = [];
   
-  constructor(private formBuilder: FormBuilder, private stepperDataService : StepperDataService, private renderer : Renderer2) {
+  constructor(private formBuilder: FormBuilder, private stepperDataService : StepperDataService, private renderer : Renderer2, private dialog: MatDialog) {
     this.searchControl.valueChanges
       .pipe(
         startWith(''),
@@ -66,7 +71,7 @@ export class StepperComponent implements OnInit {
     this.stepperDataService.getApproversData().subscribe(
       (approvers : any) => {
         this.Approvers = approvers;
-        console.log(this.Approvers);
+        // console.log(this.Approvers);
       },
       (error : any) => {
         console.error("Error", error);
@@ -129,7 +134,7 @@ export class StepperComponent implements OnInit {
     const inputValue = (event.target as HTMLInputElement).value;
     this.filteredOptions = this._filter(inputValue);
     this.isAutocompleteVisible = this.filteredOptions.length > 0 && inputValue.length>0;
-    console.log(this.selectedPerson);
+    // console.log(this.selectedPerson);
   }
 
   _filter(value: string): any[] {
@@ -143,12 +148,50 @@ export class StepperComponent implements OnInit {
     this.isAutocompleteVisible = false;
   }
 
-  removePerson(){
-    this.remove.emit();
+  removePerson(person: any){
+    const index = this.selectedPerson.indexOf(person);
+    if (index !== -1) {
+      this.selectedPerson.splice(index, 1);
+    }
   }
 
-  removeSelectedPerson(option: any){
-    console.log(option);
-    this.selectedPerson = this.selectedPerson.filter((person)=> person !== option);
+
+  // Confirmation pop up
+  openVerificationCodeDialog(): void {
+    const dialogRef = this.dialog.open(VerificationCodeDialogComponent, {
+      width: '300px',
+      data: { message: 'Please enter the verification code:' }
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // User entered a valid verification code, proceed
+        // this.createRequest();
+        console.log(result);
+      } else {
+        // User clicked "Cancel" or entered an invalid code, handle as needed
+      }
+    });
+  }
+  
+
+
+  openConfirmationDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: { message: 'Do you require confirmation?' }
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // User clicked "Yes", proceed with creating the request
+        // this.createRequest();
+        this.openVerificationCodeDialog();
+        console.log("yes");
+      } else {
+        // User clicked "No", do nothing or handle as needed
+        console.log("no");
+      }
+    });
   }
 }
